@@ -7,7 +7,7 @@ I mainly use Python however I also know C#, C++, A bit of JS, and some shell scr
 # Projects i'm proud of:
 - [De Fan](https://github.com/N3utr1n0/De-Fan) 
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=N3utr1n0&repo=De-Fan&theme=chartreuse-dark)](https://github.com/anuraghazra/github-readme-stats)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=N3utr1n0&repo=De-Fan&theme=chartreuse-dark)](https://github.com/anuraghazra/de-fan)
 
 - thats it so far
 
