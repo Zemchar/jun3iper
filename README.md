@@ -1,6 +1,6 @@
 ### Heya 
 
-Im N3UTR1N0, I like to make video games and just dick around in programing languages.
+Im N3UTR1N0, I like to make video games and just dick around in programing.
 
 I mainly use Python however I also know C#, C++, A bit of JS, and some shell scripting/bash
 
