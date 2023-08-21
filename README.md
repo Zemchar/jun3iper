@@ -1,8 +1,10 @@
-Im Juniper, I like to make video games and just play around with programing.
+# HI! My name is Juniper
+
+I love making video games and just programming in general
 
 I mainly use C# however I also know Python, JavaScript, and some shell scripting/bash
 
-If you want any project done or just want to chat please contact me either on discord (Zemchar#6494) or by email (juniper@circuit-cat.com)
+I am **available for hire**. If you are interested contact me on Discord (@Zemchar/Zemchar#6494) or by email (juniper@circuit-cat.com)!
 
-# [My Portfolio](https://circuit-cat.com)
+### [My Portfolio](https://circuit-cat.com)
 
