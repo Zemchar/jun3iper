@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juniper</title>
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+    <script type="module" crossorigin src="/assets/index-611650be.js"></script>
+    <link rel="stylesheet" href="/assets/index-fb6ff338.css">
+  </head>
+  <body>
+    <div id="nameContainer" class="relative">
+      <canvas id="mainCanvas">
+      </canvas>
+      <div id="footer" class="text-lg fixed w-1/2 top-full left-1/2 transform -translate-x-1/2 -translate-y-full text-center" style="z-index: 3">
+        <a class="randomizeIn">Click the </a><a class="randomizeIn glow hover:glow">glowing icons</a><a class="randomizeIn"> to see what I've worked on</a>
+        <br>
+      </div>
+      <div id="intro" class="absolute inset-0 w-90 h-32 text-center">
+        <div class="flex items-center justify-center">
+          <h1 class="randomizeIn mx-4 font-bold font-sans text-transparent text-4xl bg-clip-text scroll_gradient my-3">Juniper M</h1>
+        </div>
+        <p class="text-lg" id="age"></p>
+        <p class="text-lg">Who uses <a id="cs" data-color="#4fff95" style="--tc: #4fff95" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">C#</a>, <a id="unity" data-color="#d866f7" class="slideline cursor-pointer text-lg hover:text-2xl ease-in-out" style="--tc: #d866f7">Unity</a>, <a id="js" data-color="#facc15" style="--tc: #facc15;" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">Javascript</a> and <a id="many" data-color="#ec4899" style="--tc: #ec4899" class="slideline cursor-pointer hover:text-2xl text-lg">more</a></p>
+        <p class="text-lg"><a href="mailto:juniper@circuit-cat.com" target="_blank" class="slideline text-gray-500 cursor-pointer hover:text-2xl transition-all ease-in-out 3s" style="--tc:rgb(107 114 128)">Email</a> | <a href="https://github.com/Zemchar" target="_blank" class="slideline text-gray-500 cursor-pointer hover:text-2xl transition-all ease-in-out 3s" style="--tc:rgb(107 114 128)">Github</a></p>
+      </div>
+      <div id="sidebar" class="absolute inset-0 w-1/5 left-28 top-1/4 bg-blend-overlay bg-gray-300 rounded-sm text-black invisible spaceInDown" style="max-height: 45%; height: fit-content;">
+        <div id="cont" class="m-3 !cursor-default">
+          <h1 class="text-2xl hover:text-3xl w-30">
+            <a id="NameLink" href="https://example.com" target="_blank" class="slideline relative" style="--tc: black;">ProjectName</a>
+          </h1>
+          <h2 id="short">ShortDesc</h2>
+          <h4 id="ver">v1.0.0</h4>
+          <div id="code" class="bg-gray-400 rounded-2xl w-120 text-xs">
+          </div>
+          <div id="descAccess" class="bg-gray-400/30 bg-blend-color-dodge rounded-sm my-1 shadow-inner" style="height: 10rem;">
+            <p id="Desc" class="text-xs"> Desc</p>
+          </div>
+          <div class="marquee-container w-full">
+            <section class="enable-animation">
+              <div id="images" class="marquee">
+                <ul id="rep1" class="marquee-image">
+                </ul>
+                <ul id="rep2" aria-hidden="true" class="marquee-image">
+                </ul>
+              </div>
+            </section>
+          </div>
+          <p id="completed" class="text-xs">Completed:</p>
+          <p id="updated" class="text-xs">Updated:</p>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
