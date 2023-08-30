@@ -1,0 +1,250 @@
+{ "Projects": [  {
+  "id": 1,
+  "langident": "other",
+  "langs": [
+    {"Name": "Python", "Percent": "100%", "Color": "#110070"}
+  ],
+  "name_pub": "DeFan",
+  "version": "v8.0.0",
+  "short": "A Highly Configurable Discord Bot",
+  "long": "I made this bot over the course of a year or so, adding whatever I felt like for my friends and I to enjoy. It mostly comprises of text commands, a few auto-responding functions, as well as minimal moderation tools. This is perhaps the first real project that I really completed. It was from this bot that I was able to learn a lot about Python and Discord's API and continue to make discord bots in the future.",
+  "position": {
+    "fixed": false ,
+    "x": 2.1,
+    "y": 6,
+    "z": 2.3
+  },
+  "override_mesh": {
+    "override": false,
+    "path": "",
+    "scale": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 0
+    }
+  },
+  "link": "https://github.com/Zemchar/De-Fan",
+  "date_published": "September 7th 2020",
+  "date_updated": "March 2nd 2021",
+  "images": [
+  ]},
+  {
+    "id": 2,
+    "langident": "JS",
+    "langs": [
+      {"Name": "JavaScript", "Percent": "54.2%", "Color": "#facc15"},
+      {"Name": "CSS", "Percent": "30%", "Color": "#035efc"},
+      {"Name": "HTML", "Percent": "15.8%", "Color": "#fc560f"}
+    ],
+    "name_pub": "Conversation Pit",
+    "version": "v1.0.0",
+    "short": "A Web-Based Chatroom",
+    "long": "Conversation pit was my second web development project. It was a chatroom that allowed users to create their own rooms and chat with others. It was a fun project to work on and I learned a lot about backend web development, websockets, and managing databases in the process.",
+    "position": {
+      "fixed": false ,
+      "x": -3,
+      "y": 7.2,
+      "z": 2
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "https://example.com",
+    "date_published": "June 2 2022",
+    "images": []},
+  {
+    "id": 3,
+    "langident": "C#",
+    "langs": [
+      {"Name": "C#", "Percent": "100%", "Color": "#4ade80"}
+    ],
+    "name_pub": "Fabler",
+    "version": "v1.0.0",
+    "short": "A Text-Based Storytelling Engine",
+    "long": "Fabler is a text-based storytelling engine that you can play in your command line. It was designed with the primary goal to be easy for authors to use and easy to translate into other languages. It has its own scripting language of sorts to facilitate this and is relatively capable because of it. It was primarily created so I could practice C# and learn more about the language.",
+    "position": {
+      "fixed": false ,
+      "x": 3.4,
+      "y": 6,
+      "z": -2.3
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "https://github.com/Zemchar/Fabler",
+    "date_published": "June 2 2022",
+    "date_updated": "June 15 2022",
+    "images": []},
+  {
+    "id": 4,
+    "langident": "C#",
+    "langs": [
+      {"Name": "Python", "Percent": "67.6%", "Color": "#110070"},
+      {"Name": "C#", "Percent": "32.4%", "Color": "#4ade80"}
+    ],
+    "name_pub": "LoveBug",
+    "version": "v1.0.0",
+    "short": "A Little App For Long Distance Lovers",
+    "long": "LoveBug is a little app I made for my boyfriend and I to use. It was designed to take the subconscious nervousness out of messaging someone by providing quick little actions to request to do things and let your partner know that you are thinking of them. This project utilizes a server (dubbed BugNest) I built from the ground up to facilitate its functions that can be accessed with a PyQt5 Interface.",
+    "position": {
+      "fixed": false ,
+      "x": 1.2,
+      "y": 7.6,
+      "z": 1
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "https://github.com/Zemchar/LoveBug",
+    "date_published": "August 3rd 2023",
+    "images": []},
+  {
+    "id": 5,
+    "langident": "Unity",
+    "langs": [
+      {"Name": "C#", "Percent": "100%", "Color": "#4ade80"}
+    ],
+    "name_pub": "ArmLike",
+    "version": "v1.0.0",
+    "short": "A 2D Cyberpunk Platformer",
+    "long": "ArmLike was game I made with a team of people at a camp I attended in about a week. This was the first original game I ever made and it was a delightful challenge. I was one of two programmers on the team and I was responsible for player abilities and enemy AI.",
+    "position": {
+      "fixed": false ,
+      "x": -3,
+      "y": 8,
+      "z": -2
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "https://thelettuceclub.itch.io/arm-like",
+    "date_published": "August 11th 2022",
+    "date_updated": "August 13th 2022",
+    "images": []},
+  {
+    "id": 6,
+    "langident": "Unity",
+    "langs": [
+      {"Name": "C#", "Percent": "100%", "Color": "#4ade80"}
+    ],
+    "name_pub": "Defender Clone",
+    "version": "v1.0.0",
+    "short": "A 2D Defender Clone",
+    "long": "This was the first game I ever made in unity. It was a clone of the classic arcade game Defender. It was a project from a camp I attended and I was one of two programmers on the team. I was in charge of the movement, shooting, powerups, and level progression mechanics.",
+    "position": {
+      "fixed": false ,
+      "x": -1,
+      "y": 8,
+      "z": 3
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "https://drive.google.com/file/d/1IHvVxojDudPqUbDv-2PBL5rnD7UOE-r8/view?usp=drive_link",
+    "date_published": "August 1st 2022",
+    "images": []},
+  {
+    "id": 7,
+    "langident": "JS",
+    "langs": [
+      {"Name": "Javascript", "Percent": "62.24%", "Color": "#f0db4f"},
+      {"Name": "CSS", "Percent": "28.85%", "Color": "#035efc"},
+      {"Name": "HTML", "Percent": "8.91%", "Color": "#e34c26"}
+    ],
+    "name_pub": "This Website",
+    "version": "v1.0.0",
+    "short": "My Portfolio Website",
+    "long": "I Built this website from scratch to display all of my other projects. I used Tailwind CSS to style the site and Three.js to render the 3D models. I also used a custom JSON file to store all of the project data and dynamically generate the project cards.",
+    "position": {
+      "fixed": false ,
+      "x": 0,
+      "y": 8,
+      "z": -3
+    },
+    "override_mesh": {
+      "override": false,
+      "path": "",
+      "scale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 0
+      }
+    },
+    "link": "",
+    "date_published": "August 10th 2023",
+    "images": []}
+]
+}
+
