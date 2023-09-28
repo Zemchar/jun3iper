@@ -234,7 +234,8 @@ function editDetails(proj) {
     panel.children.namedItem('descAccess').children.namedItem("Desc").innerText = proj.long;
     panel.children.namedItem('ver').innerHTML = proj.version;
     //Code
-    panel.children.namedItem('code').innerHTML = ""
+    panel.children.namedItem('codeBar').innerHTML = ""
+    panel.children.namedItem("circles").innerHTML = ""
     if (mobile) {
         document.querySelector("#sidebar").style.width = "92%"
         document.querySelector("#sidebar").style.left = "1rem"
@@ -250,11 +251,8 @@ function editDetails(proj) {
         if (i === proj.langs.length) {
             classlist += " rounded-r-2xl"
         }
-        if (parseFloat(lang.Percent.replace("%", "")) < 20) {
-            panel.children.namedItem('code').innerHTML += `<span class="${classlist}" style="--wid: ${lang.Percent};background: ${lang.Color};height: 16px;overflow: clip;">${lang.Name}</span>`
-        } else {
-            panel.children.namedItem('code').innerHTML += `<span class="${classlist}" style="--wid: ${lang.Percent};background: ${lang.Color};height: 16px;overflow: clip;">${lang.Percent} ${lang.Name}</span>`
-        }
+        panel.children.namedItem('codeBar').innerHTML += `<span class="${classlist}" style="--wid: ${lang.Percent};background: ${lang.Color};height: 16px;overflow: clip;"></span>`
+        panel.children.namedItem("circles").innerHTML += `<div><div class="codeCircle" style="--bgc: ${lang.Color}"></div><span>${lang.Name}  <a> ${lang.Percent}</a></span></div>`
 
     })
     panel.children.namedItem("completed").innerText = "Completed On: " + proj.date_published
@@ -654,25 +652,25 @@ window.addEventListener('load', () => {
         // Goes to load projects, and then highlights the languages
     }
 })
-
-var mail = document.getElementById("mail")
-mail.addEventListener('mouseenter', () => {
-    if (randomTimeout) clearInterval(randomTimeout)
-    randomize(mail, "juniper@circuit-cat.com")
-    mail.addEventListener('click', (event) => {
-        event.preventDefault();
-        navigator.clipboard.writeText("juniper@circuit-cat.com")
-        mail.innerText = "Copied!"
-    })
-})
-mail.addEventListener('mouseleave', () => {
-    if (randomTimeout) clearInterval(randomTimeout)
-    randomize(mail, "Email")
-});
-
 window.addEventListener('resize', () => {
     console.log("resize")
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+
+// Vite you force my hand
+let age = document.getElementById("age");
+age.innerText = "I am a " + timeSince(new Date("September 2, 2005")) + " developer";
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+        console.log(interval + " year old");
+        return Math.floor(interval) + " year old";
+    }
+}

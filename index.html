@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juniper</title>
     <script type="module" src="/src/js/main.js"></script>
-    <script type="module" src="/src/js/age.js"></script>
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   </head>
   <body>
   <div id="loading" class="absolute w-full h-full min-w-full min-h-full content-center z-50" style="background: black">
@@ -24,8 +23,6 @@
           <span style="--delay: 7">.</span>
           <span style="--delay: 8">.</span>
           <span style="--delay: 9">.</span>
-
-
     </div>
   </div>
     <div id="nameContainer" class="relative invisible">
@@ -51,7 +48,9 @@
           </h1>
           <h2 id="short">ShortDesc</h2>
           <h4 id="ver">v1.0.0</h4>
-          <div id="code" class="bg-gray-400 rounded-2xl w-120 text-xs">
+          <div id="codeBar" style="height: 16px; max-height: 16px;" class="bg-gray-400 rounded-2xl text-xs">
+          </div>
+          <div id="circles">
           </div>
           <div id="descAccess" class="bg-gray-400/30 bg-blend-color-dodge rounded-sm my-1 shadow-inner" style="height: 10rem; overflow: auto;">
             <p id="Desc" class="text-xs" style="overflow: auto;"> Desc</p>

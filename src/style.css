@@ -187,6 +187,41 @@ body {
   animation: scroll 10s linear infinite;
 }
 
+.codeCircle {
+  border-radius: 100%;
+  background-color: var(--bgc);
+  display: inline-block;
+  height: 12px  !important;
+  min-height: 12px !important;
+  width: 12px !important;
+  min-width: 12px!important;
+  margin-right: 5px;
+
+}
+
+#circles{
+  width: inherit;
+  max-width: 100%;
+  display: inline-flex;
+  overflow-wrap: normal;
+  flex-wrap: wrap;
+  align-items: center;
+  align-self: center;
+  justify-content: flex-start;
+}
+#circles > span{
+  display: flex;
+  font-size: small;
+  margin-right: 10px;
+  text-align-all: center;
+  align-items: center;
+}
+#circles > span > a{
+  font-size-adjust: 0.5;
+    text-decoration: none;
+    color: lightgray;
+}
+
 #loading{
   position: fixed;
     top: 0;
