@@ -1,13 +1,8 @@
 import * as THREE from 'three';
-import {pingpong, randFloat, randFloatSpread, randInt} from "three/src/math/MathUtils.js";
-import {AnimationMixer, VectorKeyframeTrack} from "three";
 import * as TWEEN from '@tweenjs/tween.js'
-import {BloomEffect, EffectComposer, EffectPass, OutlineEffect, RenderPass, SelectiveBloomEffect} from "postprocessing"
+import {EffectComposer, EffectPass, OutlineEffect, RenderPass, SelectiveBloomEffect} from "postprocessing"
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {MeshBasicMaterial, Object3D, Vector3} from "three";
-import {radians, range, string} from "three/nodes";
-import {Tween} from "@tweenjs/tween.js";
-import animation from "three/addons/renderers/common/Animation.js";
+import {MeshBasicMaterial} from "three";
 
 let mobile = false;
 
@@ -15,9 +10,41 @@ const manager = new THREE.LoadingManager();
 manager.onProgress = function (item, loaded, total) {
     console.log(item, loaded, total);
 }
+const cs = document.querySelector("#cs")
+const unity = document.querySelector("#unity")
+const js = document.querySelector("#js")
+const many = document.querySelector("#many")
+
+let profile;
+fetch("/profile.json").then((r) => {r.json().then((r) => {profile = r})}) // this is stupid why is it like this javascript i hate you
 manager.onLoad = function () {
     console.log('Loading complete!');
+    console.log(profile)
     setTimeout(() => {
+        cs.addEventListener('mouseover', () => {
+            highlightType("C#", cs.dataset.color, false, 1000)
+        })
+        cs.addEventListener('mouseout', () => {
+            highlightType("C#", "#ffffff", true, 1500)
+        })
+        unity.addEventListener('mouseover', () => {
+            highlightType("Unity", unity.dataset.color)
+        })
+        unity.addEventListener('mouseout', () => {
+            highlightType("Unity", "#ffffff", true, 1500)
+        })
+        js.addEventListener('mouseover', () => {
+            highlightType("JS", js.dataset.color)
+        })
+        js.addEventListener('mouseout', () => {
+            highlightType("JS", "#ffffff", true, 1500)
+        })
+        many.addEventListener('mouseover', () => {
+            highlightType("other", many.dataset.color)
+        })
+        many.addEventListener('mouseout', () => {
+            highlightType("other", "#ffffff", true, 1500)
+        })
         document.querySelector("#loading").getAnimations()[0].play()
         document.querySelector("#nameContainer").classList.remove("invisible")
         document.querySelector("#loading").getAnimations()[0].onfinish = () => {
@@ -36,7 +63,7 @@ manager.onError = function (url) {
 
 
 //Variables
-const distance = 10; // Distance from the origi
+const distance = 10; // Distance from the origin
 const offsetY = 6; // Offset Y so the camera is above the origin
 const dampening = 20; // Speed of the rotation
 const targetAnim = {pos: 0.002, neg: -0.002}; // Speed of the animation
@@ -44,34 +71,6 @@ let animSpeed = {pos: targetAnim.pos, neg: targetAnim.neg}// Speed of the animat
 const rampSpeed = 0.00005
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const cs = document.querySelector("#cs")
-cs.addEventListener('mouseover', () => {
-    highlightType("C#", cs.dataset.color, false, 1000)
-})
-cs.addEventListener('mouseout', () => {
-    highlightType("C#", "#ffffff", true, 1500)
-})
-const unity = document.querySelector("#unity")
-unity.addEventListener('mouseover', () => {
-    highlightType("Unity", unity.dataset.color)
-})
-unity.addEventListener('mouseout', () => {
-    highlightType("Unity", "#ffffff", true, 1500)
-})
-const js = document.querySelector("#js")
-js.addEventListener('mouseover', () => {
-    highlightType("JS", js.dataset.color)
-})
-js.addEventListener('mouseout', () => {
-    highlightType("JS", "#ffffff", true, 1500)
-})
-const many = document.querySelector("#many")
-many.addEventListener('mouseover', () => {
-    highlightType("other", many.dataset.color)
-})
-many.addEventListener('mouseout', () => {
-    highlightType("other", "#ffffff", true, 1500)
-})
 // Rendering
 const canvas = document.getElementById("mainCanvas");
 console.log(canvas)
@@ -80,15 +79,17 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true
 });
 renderer.setPixelRatio(window.devicePixelRatio * 1.5);
-var effects = []
+let effects = []
 renderer.setSize(window.innerWidth, window.innerHeight);
 const renderScene = new RenderPass(scene, camera);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 
 // Meshing
-var loader = new GLTFLoader(manager)
-var tree;
+let loader = new GLTFLoader(manager)
+let tree;
+
+// Post Processing And shaders
 const bloom = new SelectiveBloomEffect(scene, camera, {
     luminanceThreshold: 0.1,
     intensity: 0.8,
@@ -141,18 +142,16 @@ async function loadScene() {
 loadScene()
 
 // Generation
-var projects = [];
-
-
+let projects = [];
 async function addProjects() {
     projects = await fetch("/projects.json");
     projects = await projects.json();
     console.log(projects["Projects"]);
     tree.position.setY(-6)
     projects["Projects"].forEach((project) => {
-        var proj;
+        let proj;
         if (project.override_mesh.override === true) {
-            var loader = new FBXLoader();
+            let loader = new FBXLoader();
             loader.load(project.override_mesh.mesh, function (object) {
                 proj = object;
                 proj.scale.set(project.override_mesh.scale.x, project.override_mesh.scale.y, project.override_mesh.scale.z);
@@ -174,64 +173,27 @@ async function addProjects() {
     }
 }
 
-
-document.body.addEventListener('mousemove', onDocumentMouseMove, false);
-document.body.addEventListener('touchmove', onDocumentTouchMove, false);
-document.querySelector("#more").addEventListener('click', BioPanel, false);
 // Use an object to store animation state
 
-var swapDisabled = false;
-
-
-function BioPanel() {
-    if (spinObject) return;
-    const panel = document.getElementById("sidebar").children.namedItem('cont')
-
-    // Name link thing
-    panel.children[0].children.namedItem("NameLink").setAttribute('href', "http://github.com/Zemchar")
-    panel.children[0].children.namedItem("NameLink").innerText = "🔗 " + "Juniper";
-    panel.children[0].children.namedItem("NameLink").cursor = "pointer"
-
-    // Description things
-    panel.children.namedItem('short').innerHTML = `<a id="mail" class="slideline" style="--tc:rgb(255 255 255)" onclick='navigator.clipboard.writeText("juniper@circuit-cat.com"); mail.innerText = "Copied!"'>Email</a><br><a class="slideline" style="--tc:rgb(255 255 255)" href="https://github.com/Zemchar" target="_blank">Github</a><br><a class="slideline" style="--tc:rgb(255 255 255)" href="https://discord.com/users/431890250369859584" target="_blank">Discord</a><br><a class="slideline" style="--tc:rgb(255 255 255)" href="https://twitter.com/0x0a_" target="_blank">Twitter</a>`;
-    panel.children.namedItem('descAccess').children.namedItem("Desc").innerHTML = "Hey! I am a trans girl who just loves to program! My passion is specifically for making games (and playing them)\n<b>I am available to hire. If you are interested, get in touch!</b>";
-    panel.children.namedItem('ver').innerHTML = "v2.0.0";
-    //Code
-    panel.children.namedItem('code').innerHTML = `<span class="text-center text-white inline-block changeToPercent rounded-l-2xl" style="--wid: 50%;background: hotpink;height: 16px;overflow: clip;">50% Cat</span>` +
-        `<span class="text-center text-white inline-block changeToPercent" style="--wid: 35%;background: silver;height: 16px;overflow: clip;">35% Computer</span>` +
-        `<span class="text-center text-white inline-block changeToPercent rounded-r-2xl" style="--wid: 15%;background: mediumpurple;height: 16px;overflow: clip;">15%</span>`
-    if (mobile) {
-        document.querySelector("#sidebar").style.width = "92%"
-        document.querySelector("#sidebar").style.left = "1rem"
-        document.querySelector("#sidebar").style.right = "1rem"
-    }
-
-    var infoPanel = document.getElementById("sidebar");
-    if (infoPanel.classList.contains("invisible")) {
-        infoPanel.classList.remove("invisible"); // first time
-        infoPanel.getAnimations()[0].play();
-        swapDisabled=true;
-    } else {
-        swapDisabled = !swapDisabled;
-        infoPanel.getAnimations()[0].reverse()
-    }
-}
-
-var spinObject = null;
-var currentlyTweening = false;
+let spinObject = null;
+let currentlyTweening = false;
 
 
 function editDetails(proj) {
+    if(proj.name_pub === "Juniper" && spinObject !== "Juniper" && spinObject !== null){
+        return; // dont break\
+    }
     const panel = document.getElementById("sidebar").children.namedItem('cont')
     console.log(panel)
+    console.log(proj)
     // Name link thing
     panel.children[0].children.namedItem("NameLink").setAttribute('href', proj.link)
     panel.children[0].children.namedItem("NameLink").innerText = "🔗 " + proj.name_pub;
     panel.children[0].children.namedItem("NameLink").cursor = "pointer"
 
     // Description things
-    panel.children.namedItem('short').innerText = proj.short;
-    panel.children.namedItem('descAccess').children.namedItem("Desc").innerText = proj.long;
+    panel.children.namedItem('short').innerHTML = proj.short;
+    panel.children.namedItem('descAccess').children.namedItem("Desc").innerHTML = proj.long;
     panel.children.namedItem('ver').innerHTML = proj.version;
     //Code
     panel.children.namedItem('codeBar').innerHTML = ""
@@ -241,14 +203,14 @@ function editDetails(proj) {
         document.querySelector("#sidebar").style.left = "1rem"
         document.querySelector("#sidebar").style.right = "1rem"
     }
-    var i = 0;
-    proj.langs.forEach((lang) => {
+    let i = 0;
+    proj["langs"].forEach((lang) => {
         i++;
-        var classlist = "text-center text-white inline-block changeToPercent"
-        if (i === 1) {
-            classlist += " rounded-l-2xl"
+        let classlist = "text-center text-white inline-block changeToPercent"
+        if (i === 1) { // first element in code bar
+            classlist += " rounded-l-2xl" //only round the left
         }
-        if (i === proj.langs.length) {
+        if (i === proj.langs.length) { // last element in the code bar
             classlist += " rounded-r-2xl"
         }
         panel.children.namedItem('codeBar').innerHTML += `<span class="${classlist}" style="--wid: ${lang.Percent};background: ${lang.Color};height: 16px;overflow: clip;"></span>`
@@ -264,109 +226,19 @@ function editDetails(proj) {
         document.querySelector("#rep2").innerHTML += `<li><img src="${image}"></li>`
 
     })
-}
-
-function onDocumentMouseDown(event) {
-    event.preventDefault();
-    var ray = new THREE.Raycaster()
-    var pointer = new THREE.Vector2()
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    ray.setFromCamera(pointer, camera)
-    var intersects = ray.intersectObjects(tree.children)[0];
-    if (intersects && !currentlyTweening && !swapDisabled) {
-        currentlyTweening = true;
-        var swap = false;
-        if (spinObject !== null) {
-            animRotate = false;
-            swap = true;
-            tree.attach(spinObject);
-            new TWEEN.Tween(spinObject.rotation).to({
-                x: 0,
-                y: 0,
-                z: 0
-            }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
-                var proj = projects["Projects"].filter((r) => {
-                    return r.id == spinObject.name.split(':')[1]
-                })[0]
-                new TWEEN.Tween(spinObject.position).to({
-                    x: proj.position.x,
-                    y: proj.position.y,
-                    z: proj.position.z
-                }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                    spinObject.rotation.set(0, 0, 0)
-                    animRotate = true;
-                    spinObject = null;
-                });
-            });
-        }
-        scene.attach(intersects.object);
-        var proj = projects["Projects"].filter((r) => {
-            return r.id == intersects.object.name.split(':')[1]
-        })[0]
-        var xtarg = -12.4;
-        if (mobile) {
-            xtarg = 0;
-        }
-        var vector = new THREE.Vector3((document.querySelector("#sidebar").offsetLeft + document.querySelector("#sidebar").clientWidth / 2) / 10, (document.querySelector("#sidebar").offsetTop + document.querySelector("#sidebar").clientHeight + 20) / 10, -1).unproject(camera);
-        console.log((document.querySelector("#sidebar").offsetLeft + document.querySelector("#sidebar").clientWidth / 2) / 10, (document.querySelector("#sidebar").offsetTop + document.querySelector("#sidebar").clientHeight + 50) / 10)
-        xtarg = (-vector.y - vector.x) / 2;
-        new TWEEN.Tween(intersects.object.rotation).to({
-            x: 4,
-            y: 4,
-            z: 0
-        }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
-            new TWEEN.Tween(intersects.object.position).to({
-                x: 0,
-                y: -4,
-                z: 3
-            }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                console.log("pos", intersects.object.position)
-                spinObject = intersects.object;
-                editDetails(proj)
-                currentlyTweening = false;
-                var infoPanel = document.getElementById("sidebar");
-                if (infoPanel.classList.contains("invisible")) {
-                    infoPanel.classList.remove("invisible"); // first time
-                    infoPanel.getAnimations()[0].play();
-                } else if (!swap) {
-                    infoPanel.getAnimations()[0].reverse()
-                }
-            });
-        });
-
-    } else if (ray.intersectObjects(scene.children).length > 0 && !currentlyTweening) {
-        if (ray.intersectObjects(scene.children)[0].object === spinObject) {
-            currentlyTweening = true;
-            animRotate = false;
-            tree.attach(spinObject);
-            var infoPanel = document.getElementById("sidebar");
+    if (proj.name_pub === "Juniper") { // special case for personal profile
+        let infoPanel = document.getElementById("sidebar");
+        if (infoPanel.classList.contains("invisible")) {
+            infoPanel.classList.remove("invisible"); // first time
+            infoPanel.getAnimations()[0].play();
+            spinObject = "Juniper";
+        } else {
+            spinObject = (spinObject === "Juniper") ? null : "Juniper";
             infoPanel.getAnimations()[0].reverse()
-            new TWEEN.Tween(spinObject.rotation).to({
-                x: 0,
-                y: 0,
-                z: 0
-            }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
-                var pos = projects["Projects"].filter((r) => {
-                    return r.id == spinObject.name.split(':')[1]
-                })[0].position
-                new TWEEN.Tween(spinObject.position).to({
-                    x: pos.x,
-                    y: pos.y,
-                    z: pos.z
-                }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                    spinObject.rotation.set(0, 0, 0)
-                    spinObject = null;
-                    currentlyTweening = false;
-                    animRotate = true;
-                });
-            });
         }
-
     }
 }
 
-document.body.addEventListener('mousedown', onDocumentMouseDown, false);
 
 camera.position.z = 5;
 
@@ -378,7 +250,7 @@ let animDirection = "pos";
 let ramping = false;
 
 function animate() {
-    if (spinObject) {
+    if (spinObject && spinObject !== "Juniper") {
         spinObject.rotation.x += 0.01;
     }
     if (animRotate) {
@@ -415,15 +287,15 @@ function normalize(value, min, max) {
     return (value - min) / (max - min);
 }
 
-var timeout;
+let timeout;
 
 function highlightType(name, color, fade = false, fadedir = 1000) {
     //filter for name tag in main-lang attribute
     projects["Projects"].forEach((proj) => {
         if (proj.langident === name) {
-            var obj = scene.getObjectByName(`${proj.name_pub}:${proj.id}`)
+            let obj = scene.getObjectByName(`${proj.name_pub}:${proj.id}`)
             if (fade) {
-                var rgb = hexToRgb(color)
+                let rgb = hexToRgb(color)
                 new TWEEN.Tween(obj.material.color).to({
                     r: rgb.r,
                     g: rgb.g,
@@ -437,9 +309,17 @@ function highlightType(name, color, fade = false, fadedir = 1000) {
     })
 }
 
+function autoSpin() {
+    animRotate = true;
+    timeout = undefined;
+    animSpeed.neg = 0;
+
+    animSpeed.pos = 0;
+    ramping = true
+}
 
 function hexToRgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
@@ -448,12 +328,12 @@ function hexToRgb(hex) {
 }
 
 function onDocumentMouseMove(event) {
-    var ray = new THREE.Raycaster()
-    var pointer = new THREE.Vector2()
+    let ray = new THREE.Raycaster()
+    let pointer = new THREE.Vector2()
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     ray.setFromCamera(pointer, camera)
-    var intersects = ray.intersectObjects(tree.children)[0];
+    let intersects = ray.intersectObjects(tree.children)[0];
     if (intersects) {
         document.body.style.cursor = "pointer";
     } else if (ray.intersectObjects(scene.children).length > 0 && ray.intersectObjects(scene.children)[0].object === spinObject) {
@@ -481,16 +361,9 @@ function onDocumentMouseMove(event) {
 
 }
 
-function autoSpin() {
-    animRotate = true;
-    timeout = undefined;
-    animSpeed.neg = 0;
 
-    animSpeed.pos = 0;
-    ramping = true
-}
 
-var prevX = 0;
+let prevX = 0;
 
 function onDocumentTouchMove(event) {
     event.preventDefault();
@@ -514,19 +387,21 @@ function onDocumentTouchMove(event) {
 
 }
 
-function onDocumentTouch(event) {
-    event.preventDefault();
-    var ray = new THREE.Raycaster()
-    var pointer = new THREE.Vector2()
-    pointer.x = (event.touches[0].x / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.touches[0].y / window.innerHeight) * 2 + 1;
+function selectorLogic(xpoint, ypoint) {
+    let ray = new THREE.Raycaster()
+    let pointer = new THREE.Vector2()
+    pointer.x = (xpoint/ window.innerWidth) * 2 - 1;
+    pointer.y = -(ypoint / window.innerHeight) * 2 + 1;
+    // Find intersections with raycaster
     ray.setFromCamera(pointer, camera)
-    var intersects = ray.intersectObjects(tree.children)[0];
-    console.log(intersects)
-    if (intersects && !currentlyTweening && !treeTweening && !treeTaken) {
+    let intersects = ray.intersectObjects(tree.children)[0];
+    if (intersects && !currentlyTweening) {
+        // Move intersected object to center
         currentlyTweening = true;
-        var swap = false;
-        if (spinObject !== null) {
+        let swap = false;
+        breakjuniper: if (spinObject !== null ) {
+            if (spinObject === "Juniper") {swap = true; break breakjuniper;} // THIS IS SO COOL
+            // Swap: Another object is already selected
             animRotate = false;
             swap = true;
             tree.attach(spinObject);
@@ -535,7 +410,7 @@ function onDocumentTouch(event) {
                 y: 0,
                 z: 0
             }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
-                var proj = projects["Projects"].filter((r) => {
+                let proj = projects["Projects"].filter((r) => {
                     return r.id == spinObject.name.split(':')[1]
                 })[0]
                 new TWEEN.Tween(spinObject.position).to({
@@ -549,14 +424,12 @@ function onDocumentTouch(event) {
                 });
             });
         }
+
+        // selected object: send to center
         scene.attach(intersects.object);
-        var proj = projects["Projects"].filter((r) => {
+        let proj = projects["Projects"].filter((r) => {
             return r.id == intersects.object.name.split(':')[1]
         })[0]
-        let target = new THREE.Vector2();
-        target.y = document.querySelector("#sidebar").offsetTop + document.querySelector("#sidebar").height + 10;
-        target.x = document.querySelector("#sidebar").innerWidth / 2
-        ay.setFromCamera(target, camera)
 
         new TWEEN.Tween(intersects.object.rotation).to({
             x: 4,
@@ -564,14 +437,14 @@ function onDocumentTouch(event) {
             z: 0
         }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
             new TWEEN.Tween(intersects.object.position).to({
-                x: middle,
-                y: 2,
+                x: 0,
+                y: -3,
                 z: 3
             }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
                 spinObject = intersects.object;
                 editDetails(proj)
                 currentlyTweening = false;
-                var infoPanel = document.getElementById("sidebar");
+                let infoPanel = document.getElementById("sidebar");
                 if (infoPanel.classList.contains("invisible")) {
                     infoPanel.classList.remove("invisible"); // first time
                     infoPanel.getAnimations()[0].play();
@@ -581,62 +454,82 @@ function onDocumentTouch(event) {
             });
         });
 
-    } else if (ray.intersectObjects(scene.children).length > 0 && !currentlyTweening) {
-        if (ray.intersectObjects(scene.children)[0].object === spinObject) {
-            currentlyTweening = true;
-            animRotate = false;
-            tree.attach(spinObject);
-            var infoPanel = document.getElementById("sidebar");
-            infoPanel.getAnimations()[0].reverse()
-            new TWEEN.Tween(spinObject.rotation).to({
-                x: 0,
-                y: 0,
-                z: 0
-            }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
-                var pos = projects["Projects"].filter((r) => {
-                    return r.id == spinObject.name.split(':')[1]
-                })[0].position
-                new TWEEN.Tween(spinObject.position).to({
-                    x: pos.x,
-                    y: pos.y,
-                    z: pos.z
-                }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                    spinObject.rotation.set(0, 0, 0)
-                    spinObject = null;
-                    currentlyTweening = false;
-                    animRotate = true;
-                    var infoPanel = document.getElementById("sidebar")
-                });
+    } else if (ray.intersectObjects(scene.children).length > 0 && !currentlyTweening && ray.intersectObjects(scene.children)[0].object === spinObject) {
+        currentlyTweening = true;
+        animRotate = false;
+        tree.attach(spinObject);
+        let infoPanel = document.getElementById("sidebar");
+        infoPanel.getAnimations()[0].reverse()
+        new TWEEN.Tween(spinObject.rotation).to({
+            x: 0,
+            y: 0,
+            z: 0
+        }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
+            let pos = projects["Projects"].filter((r) => {
+                return r.id == spinObject.name.split(':')[1] // type conversion because sometimes id tags can get fucky
+            })[0].position
+            new TWEEN.Tween(spinObject.position).to({
+                x: pos.x,
+                y: pos.y,
+                z: pos.z
+            }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
+                spinObject.rotation.set(0, 0, 0)
+                spinObject = null;
+                currentlyTweening = false;
+                animRotate = true;
             });
-        }
-
+        });
     }
 }
 
+// Movement Handlers
+function onDocumentTouch(event) {
+    event.preventDefault();
+    console.log(event.touches)
+    selectorLogic(event.touches[0].clientX, event.touches[0].clientY)
+}
+
 document.body.addEventListener('touchstart', onDocumentTouch, false);
-var randomTimeout;
+
+function onDocumentMouseDown(event) {
+    event.preventDefault();
+    selectorLogic(event.clientX, event.clientY)
+}
+
+document.body.addEventListener('mousedown', onDocumentMouseDown, false);
+
+
+document.body.addEventListener('mousemove', onDocumentMouseMove, false);
+document.body.addEventListener('touchmove', onDocumentTouchMove, false);
+
+function bioWrapper() {
+    editDetails(profile)
+}
+document.querySelector("#more").addEventListener('click', bioWrapper);
+let randomTimeout;
 
 function randomize(el, target = null) {
-    var inital;
+    //Randomize the text of an element
+    let initial;
     if (target === null) {
-        inital = el.innerText
+        initial = el.innerText
     } else {
-        inital = target
+        initial = target
     }
-    var i = 0;
+    let i = 0;
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     randomTimeout = setInterval(() => {
         i += 1;
-        var letters = [];
-        [...inital].forEach((letter) => {
-            if (inital.indexOf(letter) <= i) {
+        let letters = [];
+        [...initial].forEach((letter) => {
+            if (initial.indexOf(letter) <= i) {
                 letters.push(letter)
             } else {
                 letters.push(alphabet[Math.floor(Math.random() * alphabet.length)])
             }
         })
         el.innerHTML = letters.join("")
-        if (i >= inital.length) {
+        if (i >= initial.length) {
             clearInterval(randomTimeout)
         }
     }, 45)
@@ -665,9 +558,9 @@ let age = document.getElementById("age");
 age.innerText = "I am a " + timeSince(new Date("September 2, 2005")) + " developer";
 function timeSince(date) {
 
-    var seconds = Math.floor((new Date() - date) / 1000);
+    let seconds = Math.floor((new Date() - date) / 1000);
 
-    var interval = seconds / 31536000;
+    let interval = seconds / 31536000;
 
     if (interval > 1) {
         console.log(interval + " year old");
