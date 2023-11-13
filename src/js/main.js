@@ -555,7 +555,7 @@ window.addEventListener('resize', () => {
 
 // Vite you force my hand
 let age = document.getElementById("age");
-age.innerText = "I am a " + timeSince(new Date("September 2, 2005")) + " developer";
+age.innerText = "I am an " + timeSince(new Date("September 2, 2005")) + " developer";
 function timeSince(date) {
 
     let seconds = Math.floor((new Date() - date) / 1000);
