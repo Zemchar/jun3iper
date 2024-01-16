@@ -248,12 +248,7 @@
   {
     "id": 8,
     "langident": "photo",
-    "langs": [
-    ],
-    "name_pub": "DeFan",
-    "version": "v8.0.0",
-    "short": "A Highly Configurable Discord Bot",
-    "long": "I made this bot over the course of a year or so, adding whatever I felt like for my friends and I to enjoy. It mostly comprises of text commands, a few auto-responding functions, as well as minimal moderation tools. This is perhaps the first real project that I really completed. It was from this bot that I was able to learn a lot about Python and Discord's API and continue to make discord bots in the future.",
+    "embed_path": "RAVEFURREST4/index.html",
     "position": {
       "fixed": false ,
       "x": 2.1,

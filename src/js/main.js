@@ -22,10 +22,10 @@ manager.onLoad = function () {
     console.log(profile)
     setTimeout(() => {
         cs.addEventListener('mouseover', () => {
-            highlightType("C#", cs.dataset.color, false, 1000)
+            highlightType("C#", cs.dataset.color, false, 1500)
         })
         cs.addEventListener('mouseout', () => {
-            highlightType("C#", "#ffffff", true, 1500)
+            highlightType("C#", "#ffffff", true, 1500, )
         })
         unity.addEventListener('mouseover', () => {
             highlightType("Unity", unity.dataset.color)
@@ -40,7 +40,7 @@ manager.onLoad = function () {
             highlightType("JS", "#ffffff", true, 1500)
         })
         many.addEventListener('mouseover', () => {
-            highlightType("other", many.dataset.color)
+            highlightType("other", many.dataset.color, true, 1500)
         })
         many.addEventListener('mouseout', () => {
             highlightType("other", "#ffffff", true, 1500)
@@ -70,6 +70,7 @@ const targetAnim = {pos: 0.002, neg: -0.002}; // Speed of the animation
 let animSpeed = {pos: targetAnim.pos, neg: targetAnim.neg}// Speed of the animation
 const rampSpeed = 0.00005
 const scene = new THREE.Scene();
+let photoActive = false;
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 // Rendering
 const canvas = document.getElementById("mainCanvas");
@@ -155,7 +156,7 @@ async function addProjects() {
             proj = await loader.loadAsync(project.override_mesh.path)
             proj = proj.scene.children[0]
             console.log(proj)
-            proj.scale.set(project.override_mesh.scale.x, project.override_mesh.scale.y, project.override_mesh.scale.z);
+            proj.scale.set(project.override_mesh.scale.x +0.2, project.override_mesh.scale.y+0.2, project.override_mesh.scale.z+0.2);
             proj.rotation.set((project.override_mesh.rotation.x === -1) ? Math.random()*180 : project.override_mesh.rotation.x
                 ,(project.override_mesh.rotation.y === -1) ? Math.random()*180 : project.override_mesh.rotation.y
                 ,(project.override_mesh.rotation.z === -1   ) ? Math.random()*180 : project.override_mesh.rotation.z);
@@ -164,6 +165,7 @@ async function addProjects() {
             proj = await loader.loadAsync("/models/ProgrammingIcon.glb")
             proj = proj.scene.children[0]
             proj.rotation.set(90, Math.random()*180, Math.random()*180)
+            proj.scale.set(proj.scale.x+0.4, proj.scale.y+0.4, proj.scale.z+0.4)
             proj.material = new THREE.MeshBasicMaterial({color: 0xffffff})
 
         }
@@ -186,9 +188,21 @@ let spinObject = null;
 let currentlyTweening = false;
 
 
+function embedPhoto(proj) {
+    window.location.href = `${window.location.origin}/photostrips/${proj.embed_path}`; // TODO: Embed Own PhotoSystem
+        // photoActive=true;
+    // if(document.getElementById("photoembed").classList.contains("invisible")){
+    //     document.getElementById("photoembed").classList.remove("invisible")
+    // }
+    // document.getElementById("photoembed").src = `${window.location.origin}/photostrips/${proj.embed_path}`
+}
+
 function editDetails(proj) {
     if(proj.name_pub === "Juniper" && spinObject !== "Juniper" && spinObject !== null){
         return; // dont break\
+    }else if(proj.langident === "photo"){
+        embedPhoto(proj);
+        return;
     }
     const panel = document.getElementById("sidebar").children.namedItem('cont')
     console.log(panel)
@@ -315,6 +329,8 @@ function highlightType(name, color, fade = false, fadedir = 1000) {
         }
     })
 }
+
+
 
 function autoSpin() {
     animRotate = true;
@@ -452,7 +468,7 @@ function selectorLogic(xpoint, ypoint) {
                 editDetails(proj)
                 currentlyTweening = false;
                 let infoPanel = document.getElementById("sidebar");
-                if (infoPanel.classList.contains("invisible")) {
+                if (infoPanel.classList.contains("invisible") && !photoActive) {
                     infoPanel.classList.remove("invisible"); // first time
                     infoPanel.getAnimations()[0].play();
                 } else if (!swap) {
@@ -562,7 +578,7 @@ window.addEventListener('resize', () => {
 
 // Vite you force my hand
 let age = document.getElementById("age");
-age.innerText = "I am an " + timeSince(new Date("September 2, 2005")) + " developer";
+age.innerText = timeSince(new Date("September 2, 2005"));
 function timeSince(date) {
 
     let seconds = Math.floor((new Date() - date) / 1000);
