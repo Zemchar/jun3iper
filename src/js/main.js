@@ -148,23 +148,30 @@ async function addProjects() {
     projects = await projects.json();
     console.log(projects["Projects"]);
     tree.position.setY(-6)
-    projects["Projects"].forEach((project) => {
+    for (const project of projects["Projects"]) {
         let proj;
         if (project.override_mesh.override === true) {
-            let loader = new FBXLoader();
-            loader.load(project.override_mesh.mesh, function (object) {
-                proj = object;
-                proj.scale.set(project.override_mesh.scale.x, project.override_mesh.scale.y, project.override_mesh.scale.z);
-                proj.rotation.set(project.override_mesh.rotation.x, project.override_mesh.rotation.y, project.override_mesh.rotation.z);
-            })
+            console.log(project.override_mesh.path);
+            proj = await loader.loadAsync(project.override_mesh.path)
+            proj = proj.scene.children[0]
+            console.log(proj)
+            proj.scale.set(project.override_mesh.scale.x, project.override_mesh.scale.y, project.override_mesh.scale.z);
+            proj.rotation.set((project.override_mesh.rotation.x === -1) ? Math.random()*180 : project.override_mesh.rotation.x
+                ,(project.override_mesh.rotation.y === -1) ? Math.random()*180 : project.override_mesh.rotation.y
+                ,(project.override_mesh.rotation.z === -1   ) ? Math.random()*180 : project.override_mesh.rotation.z);
+            proj.material = new THREE.MeshBasicMaterial({color: 0xffffff})
         } else {
-            proj = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+            proj = await loader.loadAsync("/models/ProgrammingIcon.glb")
+            proj = proj.scene.children[0]
+            proj.rotation.set(90, Math.random()*180, Math.random()*180)
+            proj.material = new THREE.MeshBasicMaterial({color: 0xffffff})
+
         }
         proj.position.set(project.position.x, project.position.y, project.position.z);
         tree.add(proj) // will rotate with tree
         proj.name = `${project.name_pub}:${project.id}`;
         bloom.selection.add(proj)
-    })
+    }
     if (mobile) {
         highlightType("C#", cs.dataset.color)
         highlightType("Unity", unity.dataset.color)
