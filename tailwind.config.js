@@ -2,7 +2,7 @@ import plugin from "tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js}", "./index.html"],
+  content: ["./src/**/*.{html,js}", "./Programming.html"],
   theme: {
     theme: {
       extend: {

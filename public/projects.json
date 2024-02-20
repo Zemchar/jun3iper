@@ -244,37 +244,7 @@
     },
     "link": "",
     "date_published": "August 10th 2023",
-    "images": []},
-  {
-    "id": 8,
-    "langident": "photo",
-    "embed_path": "RAVEFURREST4/index.html",
-    "position": {
-      "fixed": false ,
-      "x": 2.1,
-      "y": 9,
-      "z": 2.3
-    },
-    "override_mesh": {
-      "override": true,
-      "path": "/models/Icons.glb",
-      "scale": {
-        "x": 0.8,
-        "y": 0.8,
-        "z": 0.8
-      },
-      "rotation": {
-        "x": 0,
-        "y": -1,
-        "z": -1,
-        "w": 0
-      }
-    },
-    "link": "https://github.com/Zemchar/De-Fan",
-    "date_published": "September 7th 2020",
-    "date_updated": "March 2nd 2021",
-    "images": [
-    ]}
-]
+    "images": []}
+  ]
 }
 
