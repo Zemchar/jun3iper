@@ -528,7 +528,7 @@ document.body.addEventListener('touchmove', onDocumentTouchMove, false);
 function bioWrapper() {
     editDetails(profile)
 }
-document.querySelector("#more").addEventListener('click', bioWrapper);
+// document.querySelector("#more").addEventListener('click', bioWrapper);
 let randomTimeout;
 
 function randomize(el, target = null) {
@@ -568,12 +568,12 @@ window.addEventListener('load', () => {
         // Goes to load projects, and then highlights the languages
     }
 })
-window.addEventListener('resize', () => {
-    console.log("resize")
+window.addEventListener("resize", () => {
+    console.log("Resizing")
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
+})
 
 
 // Vite you force my hand

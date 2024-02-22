@@ -74,8 +74,13 @@ programming = programming.scene.children[0]
 programming.rotation.x = 90
 photo.name = "Photography"
 programming.name="Programming"
-programming.position.x = -2 // set to right
-photo.position.x = 2 // set to left
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    programming.position.set(0, 1, 1)
+    photo.position.set(0, -0.5, 0);
+}else{
+    photo.position.x = -2; // left
+    programming.position.x = 2;
+}
 console.log(programming.material.color);
 programming.material = new THREE.MeshBasicMaterial({color: 0xffffff})
 photo.material = new THREE.MeshBasicMaterial({color: 0xffffff})
@@ -93,14 +98,12 @@ scene.add(programming)
 scene.add(photo)
 programming.mesh = photo.mesh
 camera.position.set(0, 1, 5)
-composer.render(scene, camera)
-camera.updateProjectionMatrix();
 
 animate()
-
 function animate() {
     photo.rotation.y += 0.01;
     programming.rotation.y -= 0.01;
+    TWEEN.update()
     requestAnimationFrame(animate);
     composer.render()
 }
@@ -134,7 +137,6 @@ function onDocumentMouseMove(event) {
     } else {
         document.body.style.cursor = "default";
     }
-    composer.render()
 }
 
 function selectorLogic(xpoint, ypoint) {
@@ -146,6 +148,13 @@ function selectorLogic(xpoint, ypoint) {
     ray.setFromCamera(pointer, camera)
     let intersects = ray.intersectObjects(scene.children)[0];
     if (intersects) {
+        if(document.getElementById("businessCard").classList.contains("animate")) {// If the business card is shown
+            document.getElementById("businessCard").classList.remove("animate")
+            document.getElementById("businessCard").classList.remove("straightened")
+            document.getElementById("businessCard").classList.add("exit")
+
+            return;
+        }
         console.log(intersects)
         window.location.assign(intersects.object.name + ".html")
     }
@@ -165,4 +174,34 @@ function timeSince(date) {
         return Math.floor(interval) + " year old";
     }
 }
+
+
+document.querySelector("a#developer").addEventListener("mouseenter", () => {
+    new TWEEN.Tween(programming.scale).to({x: 1.2, y: 1.2, z: 1.2}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(photo.scale).to({x: 0.8, y: 0.8, z: 0.8}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(programming.material.color).to({r: 1, g: 0.6, b: 0.9}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+});
+document.querySelector("a#developer").addEventListener("mouseleave", () => {
+    new TWEEN.Tween(programming.scale).to({x: 1, y: 1, z: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(photo.scale).to({x: 1, y: 1, z: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(programming.material.color).to({r: 1, g: 1, b: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+});
+
+document.querySelector("a#photographer").addEventListener("mouseenter", () => {
+    new TWEEN.Tween(photo.scale).to({x: 1.2, y: 1.2, z: 1.2}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(programming.scale).to({x: 0.8, y: 0.8, z: 0.8}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(photo.material.color).to({r: 1, g: 0.6, b: 0.9}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+});
+
+document.querySelector("a#photographer").addEventListener("mouseleave", () => {
+    new TWEEN.Tween(photo.scale).to({x: 1, y: 1, z: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(programming.scale).to({x: 1, y: 1, z: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+    new TWEEN.Tween(photo.material.color).to({r: 1, g: 1, b: 1}, 200).easing(TWEEN.Easing.Sinusoidal.InOut).start()
+});
+window.addEventListener("resize", () => {
+    console.log("Resizing")
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+})
 
