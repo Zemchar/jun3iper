@@ -152,7 +152,7 @@ function selectorLogic(xpoint, ypoint) {
             document.getElementById("businessCard").classList.remove("animate")
             document.getElementById("businessCard").classList.remove("straightened")
             document.getElementById("businessCard").classList.add("exit")
-
+            document.getElementById("cardSpin").innerText = "Let me give you my card..."
             return;
         }
         console.log(intersects)
