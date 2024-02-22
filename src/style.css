@@ -305,8 +305,9 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     padding: 10px;
     text-align: center;
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.4);
     transition: transform 1s ease-in-out;
+  ;
 }
 
 @keyframes flip {
@@ -320,7 +321,7 @@ body {
 
 #businessCard.straightened {
   transition: transform 1s ease-in-out;
-  transform: translate(-50%, -50% ) rotate(0deg) scale(1.1) !important;
+  transform: translate(-50%, -50% ) rotate(0deg) scale(1.4) !important;
 }
 
 
@@ -330,7 +331,8 @@ body {
 }
 
 #businessCard.exit {
-  animation: cardSpinReverse 0.8s ease-in forwards;
+  transform: scale(1.2);
+  animation: cardSpin 0.8s ease-in reverse forwards;
 }
 
 @keyframes cardSpin {
@@ -346,7 +348,7 @@ body {
   100% {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(var(--deg));
+    transform: translate(-50%, -50%) rotate(var(--deg)) scale(1.2);
   }
 }
 
@@ -355,16 +357,15 @@ body {
   0% {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1.4);
   }
   50% {
-
     transform: translate(-50%, -50%) rotate(360deg);
   }
   100% {
     top: -100%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.4);
   }
 }
 
