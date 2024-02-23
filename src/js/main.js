@@ -419,6 +419,12 @@ function selectorLogic(xpoint, ypoint) {
     ray.setFromCamera(pointer, camera)
     let intersects = ray.intersectObjects(tree.children)[0];
     if (intersects && !currentlyTweening) {
+        if(document.getElementById("businessCard").classList.contains("animate")) {// If the business card is shown
+            document.getElementById("businessCard").classList.remove("animate")
+            document.getElementById("businessCard").classList.remove("straightened")
+            void document.getElementById("businessCard").offsetWidth; // trigger a reflow
+            document.getElementById("businessCard").classList.add("exit")
+        }
         // Move intersected object to center
         currentlyTweening = true;
         let swap = false;

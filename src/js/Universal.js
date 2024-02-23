@@ -1,7 +1,7 @@
 import TWEEN from "@tweenjs/tween.js";
 document.getElementById('cardSpin').addEventListener('click', function() {
     let card = document.getElementById('businessCard');
-    document.getElementById('cardSpin').innerText = (card.classList.contains('animate'))? 'Let me give you my card...' :'I\'ll need that back...';
+    // document.getElementById('cardSpin').innerText = (card.classList.contains('animate'))? 'Let me give you my card' :'I do need that back...';
     if(card.classList.contains('straightened')) {
         card.classList.remove('straightened');
     }
@@ -31,6 +31,7 @@ document.getElementById('flipper').addEventListener('click', function() {
     document.getElementById('cardBack').style.display = (document.getElementById('cardBack').style.display === 'none')? 'block': 'none';
 
 })
+
 let copycounter =0;
 let timeout;
 document.getElementById('mail').addEventListener('click', function() {

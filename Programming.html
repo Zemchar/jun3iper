@@ -10,6 +10,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <script src="https://kit.fontawesome.com/45151477c9.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
   </head>
   <body>
   <div id="loading" class="absolute w-full h-full min-w-full min-h-full content-center z-50" style="background: black">
@@ -40,15 +44,43 @@
         <p class="text-lg text-gr" style="color: rgb(156, 163, 175, 0.8);">She/They/It</p>
         <p class="text-lg">I am an <a id="age"></a> developer </p>
         <p class="text-lg">Who uses <a id="cs" data-color="#4fff95" style="--tc: #4fff95" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">C#</a>, <a id="unity" data-color="#d866f7" class="slideline cursor-pointer text-lg hover:text-2xl ease-in-out" style="--tc: #d866f7">Unity</a>, <a id="js" data-color="#facc15" style="--tc: #facc15;" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">Javascript</a> and <a id="many" data-color="#ec4899" style="--tc: #ec4899" class="slideline cursor-pointer hover:text-2xl text-lg">more</a></p>
-        <p class="text-lg"><a id="cardSpin" target="_blank" class="slideline text-gray-500 cursor-pointer hover:text-2xl transition-all ease-in-out 3s" style="--tc:rgb(107 114 128)">More / Contact</a></p>
+        <p class="text-lg"><a id="cardSpin" target="_blank" class="slideline text-gray-500 cursor-pointer hover:text-2xl transition-all ease-in-out 3s" style="--tc:rgb(107 114 128)">Rates & Contact</a></p>
       </div>
-      <div id="businessCard" style="--deg: 12deg">
-        <p class="text-black text-lg" style="border: 2px solid rgba(192 38 211); border-radius: 8px; margin-bottom: 3px"><a href="mailto:juniper@circuit-cat.com">juniper@circuit-cat.com</a></p>
-        <hr>
-        <p class="text-black">Programming - Per-Project Pricing</p>
-        <p class="text-black">Photography - $50/Hour OR Price-Per Shoot</p>
-        <hr>
-        <p class="!text-xs text-black"><a href="http://instagram.com/zemchar/" target="_blank" style="--tc: #ff7b00; color: var(--tc);" class="slideline cursor-pointer transition-all ease-in-out 3s">Instagram</a> | <a href="https://github.com/zemchar" target="_blank" style="--tc: #2dba4e; color: var(--tc);" class="slideline cursor-pointer transition-all ease-in-out 3s">Github</a> | <a href="https://twitter.com/zemchar" target="_blank" style="--tc: #1DA1F2; color: var(--tc);" class="slideline cursor-pointer transition-all ease-in-out 3s">Twitter</a></p>
+      <div id="businessCard" class="caveat-font justify-center" style="--deg: 12deg">
+        <div id="cardFront">
+          <p class="text-black text-xl" style=" margin-bottom: 3px"><a id="mail" class="slideline cursor-pointer text-2xl" style="--tc: #000000; color: var(--tc);">juniper@circuit-cat.com</a></p>
+          <hr style="margin: 6px">
+          <div class="flex" style="justify-content: space-between;">
+            <div class>
+              <i id="computerIcon" class="fa-solid fa-microchip" style="color: #000000;"></i>
+              <p class="text-black"> Per-Project Pricing</p>
+              <p class="text-black text-xs">Revisions at $60/Hour</p>
+            </div>
+            <div>
+              <i id="cameraIcon" class="fa-solid fa-camera-retro" style="color: #000000;"></i>
+              <p class="text-black"> $50/Hour</p>
+              <p class="text-black text-xs">Per-Event Pricing Available</p>
+            </div>
+          </div>
+          <hr style="margin: 6px">
+          <p class="text-black" style="font-size: 13px">Interested in Hiring? Contact me through Email or Instagram</p>
+          <div class="text-2xl text-black flex w-1/2 relative" style="justify-content: space-between; left: 25%;">
+            <a href="http://instagram.com/zemchar/" target="_blank" style="--tc: #ff7b00; color: var(--tc);" class="slideline cursor-pointer hover:text-3xl transition-all ease-in-out 3s"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://github.com/zemchar" target="_blank" style="--tc: #000000; color: var(--tc);" class="slideline cursor-pointer hover:text-3xl transition-all ease-in-out 3s"><i class="fa-brands fa-github"></i></a>
+            <a href="https://twitter.com/zemchar" target="_blank" style="--tc: #1DA1F2; color: var(--tc);" class="slideline cursor-pointer hover:text-3xl transition-all ease-in-out 3s"><i class="fa-brands fa-twitter"></i></a></div>
+        </div>
+        <div id="cardBack" style="display: none;max-height: inherit">
+          <p class="text-black text-2xl">About Me</p>
+          <hr>
+
+          <p class="text-black text-xs">Juniper is a trans woman with an undying love for computers and the arts. And of course, cats!! She has over 5 years of experience programming (completely self-taught), and has spent just over a year actually taking photography seriously. She loves tackling hard challenges and learning new things along the way. She plans to major in Computer Science and Game Design. No, her handwriting does not look this good IRL.</p>
+          <p class="text-black text-xs"> HRT 9/5/2023</p>
+        </div>
+        <div class="flex" style="justify-content: space-evenly; top:98%">
+          <a id="straighten" target="_blank" style="--tc: #c0c0c0; color: var(--tc);" class="slideline cursor-pointer transition-all ease-in-out 3s text-black"><i class="fa-solid fa-ruler-combined"></i></a>
+          <a id="flipper" target="_blank" style="--tc: #c0c0c0; color: var(--tc);" class="cursor-pointer rotate-0 hover:rotate-90 transition-all ease-in-out 3s text-black"><i class="fa-solid fa-arrows-rotate" style="color: #c0c0c0;"></i></a>
+
+        </div>
       </div>
       <div id="sidebar" class="absolute inset-0 w-1/5 top-1/4 bg-blend-overlay bg-gray-300 rounded-sm text-black invisible spaceInDown" style="max-height: 45%; height: 40vh; overflow: scroll;left: 40vw">
         <div id="cont" class="m-3 !cursor-default">

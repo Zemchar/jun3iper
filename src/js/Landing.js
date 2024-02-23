@@ -65,41 +65,45 @@ const bloom = new SelectiveBloomEffect(scene, camera, {
 let programming;
 let photo;
 // SETUP //
-programming = await loader.loadAsync("/models/ProgrammingIcon.glb", )
-photo = await loader.loadAsync("/models/Icons.glb")
+async function loadModels(){
+    programming = await loader.loadAsync("/models/ProgrammingIcon.glb", )
+    photo = await loader.loadAsync("/models/Icons.glb")
+    photo = photo.scene.children[0]
+    programming = programming.scene.children[0]
+    programming.rotation.x = 90
+    photo.name = "Photography"
+    programming.name="Programming"
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        programming.position.set(0, 1, 1)
+        photo.position.set(0, -0.5, 0);
+    }else{
+        photo.position.x = -2; // left
+        programming.position.x = 2;
+    }
+    console.log(programming.material.color);
+    programming.material = new THREE.MeshBasicMaterial({color: 0xffffff})
+    photo.material = new THREE.MeshBasicMaterial({color: 0xffffff})
 
+    console.log(programming.material.color);
 
-photo = photo.scene.children[0]
-programming = programming.scene.children[0]
-programming.rotation.x = 90
-photo.name = "Photography"
-programming.name="Programming"
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-    programming.position.set(0, 1, 1)
-    photo.position.set(0, -0.5, 0);
-}else{
-    photo.position.x = -2; // left
-    programming.position.x = 2;
+    bloom.selection.add(photo)
+    bloom.selection.add(programming)
+    effects.push(bloom)
+    const effectPass = new EffectPass(camera, ...effects);
+    effectPass.renderToScreen = true;
+    composer.addPass(effectPass)
+    composer.addPass(renderScene);
+    scene.add(programming)
+    scene.add(photo)
+    programming.mesh = photo.mesh
+    camera.position.set(0, 1, 5)
+    animate()
+
 }
-console.log(programming.material.color);
-programming.material = new THREE.MeshBasicMaterial({color: 0xffffff})
-photo.material = new THREE.MeshBasicMaterial({color: 0xffffff})
 
-console.log(programming.material.color);
+loadModels()
 
-bloom.selection.add(photo)
-bloom.selection.add(programming)
-effects.push(bloom)
-const effectPass = new EffectPass(camera, ...effects);
-effectPass.renderToScreen = true;
-composer.addPass(effectPass)
-composer.addPass(renderScene);
-scene.add(programming)
-scene.add(photo)
-programming.mesh = photo.mesh
-camera.position.set(0, 1, 5)
 
-animate()
 function animate() {
     photo.rotation.y += 0.01;
     programming.rotation.y -= 0.01;
@@ -151,8 +155,8 @@ function selectorLogic(xpoint, ypoint) {
         if(document.getElementById("businessCard").classList.contains("animate")) {// If the business card is shown
             document.getElementById("businessCard").classList.remove("animate")
             document.getElementById("businessCard").classList.remove("straightened")
+            void document.getElementById("businessCard").offsetWidth; // trigger a reflow
             document.getElementById("businessCard").classList.add("exit")
-            document.getElementById("cardSpin").innerText = "Let me give you my card..."
             return;
         }
         console.log(intersects)
