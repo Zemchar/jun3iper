@@ -22,10 +22,10 @@ manager.onLoad = function () {
     console.log(profile)
     setTimeout(() => {
         cs.addEventListener('mouseover', () => {
-            highlightType("C#", cs.dataset.color, false, 1000)
+            highlightType("C#", cs.dataset.color, false, 1500)
         })
         cs.addEventListener('mouseout', () => {
-            highlightType("C#", "#ffffff", true, 1500)
+            highlightType("C#", "#ffffff", true, 1500, )
         })
         unity.addEventListener('mouseover', () => {
             highlightType("Unity", unity.dataset.color)
@@ -40,7 +40,7 @@ manager.onLoad = function () {
             highlightType("JS", "#ffffff", true, 1500)
         })
         many.addEventListener('mouseover', () => {
-            highlightType("other", many.dataset.color)
+            highlightType("other", many.dataset.color, true, 1500)
         })
         many.addEventListener('mouseout', () => {
             highlightType("other", "#ffffff", true, 1500)
@@ -70,6 +70,7 @@ const targetAnim = {pos: 0.002, neg: -0.002}; // Speed of the animation
 let animSpeed = {pos: targetAnim.pos, neg: targetAnim.neg}// Speed of the animation
 const rampSpeed = 0.00005
 const scene = new THREE.Scene();
+let photoActive = false;
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 // Rendering
 const canvas = document.getElementById("mainCanvas");
@@ -148,23 +149,31 @@ async function addProjects() {
     projects = await projects.json();
     console.log(projects["Projects"]);
     tree.position.setY(-6)
-    projects["Projects"].forEach((project) => {
+    for (const project of projects["Projects"]) {
         let proj;
         if (project.override_mesh.override === true) {
-            let loader = new FBXLoader();
-            loader.load(project.override_mesh.mesh, function (object) {
-                proj = object;
-                proj.scale.set(project.override_mesh.scale.x, project.override_mesh.scale.y, project.override_mesh.scale.z);
-                proj.rotation.set(project.override_mesh.rotation.x, project.override_mesh.rotation.y, project.override_mesh.rotation.z);
-            })
+            console.log(project.override_mesh.path);
+            proj = await loader.loadAsync(project.override_mesh.path)
+            proj = proj.scene.children[0]
+            console.log(proj)
+            proj.scale.set(project.override_mesh.scale.x +0.2, project.override_mesh.scale.y+0.2, project.override_mesh.scale.z+0.2);
+            proj.rotation.set((project.override_mesh.rotation.x === -1) ? Math.random()*180 : project.override_mesh.rotation.x
+                ,(project.override_mesh.rotation.y === -1) ? Math.random()*180 : project.override_mesh.rotation.y
+                ,(project.override_mesh.rotation.z === -1   ) ? Math.random()*180 : project.override_mesh.rotation.z);
+            proj.material = new THREE.MeshBasicMaterial({color: 0xffffff})
         } else {
-            proj = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+            proj = await loader.loadAsync("/models/ProgrammingIcon.glb")
+            proj = proj.scene.children[0]
+            proj.rotation.set(90, Math.random()*180, Math.random()*180)
+            proj.scale.set(proj.scale.x+0.4, proj.scale.y+0.4, proj.scale.z+0.4)
+            proj.material = new THREE.MeshBasicMaterial({color: 0xffffff})
+
         }
         proj.position.set(project.position.x, project.position.y, project.position.z);
         tree.add(proj) // will rotate with tree
         proj.name = `${project.name_pub}:${project.id}`;
         bloom.selection.add(proj)
-    })
+    }
     if (mobile) {
         highlightType("C#", cs.dataset.color)
         highlightType("Unity", unity.dataset.color)
@@ -179,9 +188,21 @@ let spinObject = null;
 let currentlyTweening = false;
 
 
+function embedPhoto(proj) {
+    window.location.href = `${window.location.origin}/photostrips/${proj.embed_path}`; // TODO: Embed Own PhotoSystem
+        // photoActive=true;
+    // if(document.getElementById("photoembed").classList.contains("invisible")){
+    //     document.getElementById("photoembed").classList.remove("invisible")
+    // }
+    // document.getElementById("photoembed").src = `${window.location.origin}/photostrips/${proj.embed_path}`
+}
+
 function editDetails(proj) {
     if(proj.name_pub === "Juniper" && spinObject !== "Juniper" && spinObject !== null){
         return; // dont break\
+    }else if(proj.langident === "photo"){
+        embedPhoto(proj);
+        return;
     }
     const panel = document.getElementById("sidebar").children.namedItem('cont')
     console.log(panel)
@@ -309,6 +330,8 @@ function highlightType(name, color, fade = false, fadedir = 1000) {
     })
 }
 
+
+
 function autoSpin() {
     animRotate = true;
     timeout = undefined;
@@ -396,6 +419,12 @@ function selectorLogic(xpoint, ypoint) {
     ray.setFromCamera(pointer, camera)
     let intersects = ray.intersectObjects(tree.children)[0];
     if (intersects && !currentlyTweening) {
+        if(document.getElementById("businessCard").classList.contains("animate")) {// If the business card is shown
+            document.getElementById("businessCard").classList.remove("animate")
+            document.getElementById("businessCard").classList.remove("straightened")
+            void document.getElementById("businessCard").offsetWidth; // trigger a reflow
+            document.getElementById("businessCard").classList.add("exit")
+        }
         // Move intersected object to center
         currentlyTweening = true;
         let swap = false;
@@ -445,7 +474,7 @@ function selectorLogic(xpoint, ypoint) {
                 editDetails(proj)
                 currentlyTweening = false;
                 let infoPanel = document.getElementById("sidebar");
-                if (infoPanel.classList.contains("invisible")) {
+                if (infoPanel.classList.contains("invisible") && !photoActive) {
                     infoPanel.classList.remove("invisible"); // first time
                     infoPanel.getAnimations()[0].play();
                 } else if (!swap) {
@@ -505,7 +534,7 @@ document.body.addEventListener('touchmove', onDocumentTouchMove, false);
 function bioWrapper() {
     editDetails(profile)
 }
-document.querySelector("#more").addEventListener('click', bioWrapper);
+// document.querySelector("#more").addEventListener('click', bioWrapper);
 let randomTimeout;
 
 function randomize(el, target = null) {
@@ -545,17 +574,17 @@ window.addEventListener('load', () => {
         // Goes to load projects, and then highlights the languages
     }
 })
-window.addEventListener('resize', () => {
-    console.log("resize")
+window.addEventListener("resize", () => {
+    console.log("Resizing")
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
+})
 
 
 // Vite you force my hand
 let age = document.getElementById("age");
-age.innerText = "I am an " + timeSince(new Date("September 2, 2005")) + " developer";
+age.innerText = timeSince(new Date("September 2, 2005"));
 function timeSince(date) {
 
     let seconds = Math.floor((new Date() - date) / 1000);
