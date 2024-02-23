@@ -7,9 +7,9 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                main: resolve(__dirname, 'index.html'),
-                photography: resolve(__dirname, 'src/pages/Photography.html'),
-                programming: resolve(__dirname, 'src/pages/Programming.html'),
+                landing: resolve(__dirname, 'index.html'),
+                photography: resolve(__dirname, 'pages/Photography.html'),
+                programming: resolve(__dirname, 'pages/Programming.html'),
             }
         }
 
