@@ -160,7 +160,7 @@ function selectorLogic(xpoint, ypoint) {
             return;
         }
         console.log(intersects)
-        window.location.assign("pages/" +intersects.object.name + ".html")
+        window.location.assign("src/pages/" +intersects.object.name + ".html")
     }
 }
 
