@@ -6,9 +6,9 @@
     {"Name": "Computer", "Percent": "27%", "Color": "#949494"},
     {"Name": "Silly girlthing", "Percent": "20%", "Color": "#ff2e9a"}
   ],
-  "short": "<div style=\"display: flex;justify-content: space-between;h\"><a id=\"mail\" class=\"slideline\" style=\"--tc:rgb(255 255 255)\" onclick='navigator.clipboard.writeText(\"juniper@circuit-cat.com\"); mail.innerText = \"Copied!\"'>Email</a><br><a class=\"slideline\" style=\"--tc:rgb(255 255 255);\" href=\"https://github.com/Zemchar\" target=\"_blank\">Github</a><br><a class=\"slideline\" style=\"--tc:rgb(255 255 255)\" href=\"https://discord.com/users/431890250369859584\" target=\"_blank\">Discord</a><br><a class=\"slideline\" style=\"--tc:rgb(255 255 255)\" href=\"https://twitter.com/0x0a_\" target=\"_blank\">Twitter</a>",
+  "short": "<div style=\"display: flex;justify-content: space-between;h\"><a id=\"mail\" class=\"slideline\" style=\"--tc:rgb(255 255 255)\" onclick='navigator.clipboard.writeText(\"juniper@circuit-cat.com\"); mail.innerText = \"Copied!\"'>Email</a> • <a class=\"slideline\" style=\"--tc:rgb(255 255 255);\" href=\"https://github.com/Zemchar\" target=\"_blank\">Github</a> • <a class=\"slideline\" style=\"--tc:rgb(255 255 255)\" href=\"https://twitter.com/zemchar\" target=\"_blank\">Twitter</a> • <a class=\"slideline\" style=\"--tc:rgb(255 255 255)\" href=\"https://instagram.com/zemchar\" target=\"_blank\">Insta</a>",
   "long": "Hiii! I am a trans girl who just loves to program! My passion is specifically for making games (and playing them)\n<br><b>I am available to hire. If you are interested, get in touch!</b>",
-  "link": "https://github.com/Zemchar/De-Fan",
+  "link": "https://github.com/Zemchar/",
   "date_published": "September 2nd 2005 (i am very old)",
   "date_updated": "May 20th 2020",
   "images": [

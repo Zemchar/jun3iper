@@ -16,6 +16,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  --wid: 100%; /* Define the --wid property */
+  --bgc: #000; /* Define the --bgc property */
+
 }
 
 canvas {
@@ -288,3 +291,88 @@ body {
         transform-origin: bottom;
     }
 }
+
+#businessCard {
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  background: #ffffff;
+  border: 4px dashed rgba(253, 159, 233, 0.8);
+
+  width: 315px;
+    height: 215px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    text-align: center;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.4);
+    transition: transform 1s ease-in-out;
+  ;
+}
+
+@keyframes flip {
+  0% {
+    transform: translate(-50%, -50%) rotateY(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateY(180deg);
+  }
+}
+
+#businessCard.straightened {
+  transition: transform 1s ease-in-out;
+  transform: translate(-50%, -50% ) rotate(0deg) scale(1.4) !important;
+}
+
+
+
+#businessCard.animate {
+  animation: cardSpin 0.8s ease-out forwards;
+}
+
+#businessCard.exit {
+  transform: scale(1.2);
+  animation: cardSpin 0.8s ease-in reverse forwards;
+}
+
+@keyframes cardSpin {
+  0% {
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  100% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(var(--deg)) scale(1.2);
+  }
+}
+
+
+@keyframes cardSpinReverse {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  100% {
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.4);
+  }
+}
+
+
+.caveat-font {
+           font-family: "Caveat", cursive;
+           font-optical-sizing: auto;
+           font-weight: 500;
+           font-style: normal;
+         }
