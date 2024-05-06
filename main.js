@@ -74,6 +74,7 @@ async function loadModels(){
     photo.name = "Photography"
     programming.name="Programming"
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        alert("Hello! I appreciate you visiting my site. This website was primarily designed with the desktop experience in mind. I have tweaked what I can to make it as mobile friendly as possible, but please keep in mind everything may not work or look as intended.")
         programming.position.set(0, 1, 1)
         photo.position.set(0, -0.5, 0);
     }else{
