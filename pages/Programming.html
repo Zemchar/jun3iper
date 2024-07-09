@@ -38,10 +38,42 @@
       </div>
       <div id="intro" class="absolute inset-0 w-90 h-32 text-center">
         <div class="flex items-center justify-center">
-          <h1 id="name" class=" mx-4 font-bold font-sans text-transparent text-4xl bg-clip-text scroll_gradient my-3">Juniper M</h1>
+          <script>
+            let randomTimeout
+            function randomize(el, target = null) {
+              //Randomize the text of an element
+              let initial;
+              if (target === null) {
+                initial = el.innerText
+              } else {
+                initial = target
+              }
+              let i = -3;
+              const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890&^%_)(*#@!~=-\[]{}"
+              randomTimeout = setInterval(() => {
+                i += 1;
+                let letters = [];
+                [...initial].forEach((letter) => {
+                  if (initial.indexOf(letter) <= i) {
+                    letters.push(letter)
+                  } else {
+                    letters.push(alphabet[Math.floor(Math.random() * alphabet.length)])
+                  }
+                })
+                el.innerHTML = letters.join("")
+                if (i >= initial.length) {
+                  clearInterval(randomTimeout)
+                }
+              }, 75)
+            }
+          </script>
+          <h1 class="mx-4 font-bold font-sans text-4xl">Hello, I'm<a
+                  onmouseenter="clearInterval(randomTimeout); randomize(this, 'Juniper')"
+                  onmouseleave="clearInterval(randomTimeout); randomize(this, 'Zemchar')"
+                  id="name" class=" mx-4 font-bold font-sans text-transparent text-4xl bg-clip-text scroll_gradient my-3">Zemchar</a></h1>
         </div>
-        <p class="text-lg text-gr" style="color: rgb(156, 163, 175, 0.8);">She/They/It</p>
-        <p class="text-lg">I am an <a id="age"></a> developer </p>
+        <p class="text-lg text-gr" style="color: rgb(156, 163, 175, 0.8);">She/It</p>
+        <p class="text-lg">I am an <a id="age"></a> developer</p>
         <p class="text-lg">Who uses <a id="cs" data-color="#4fff95" style="--tc: #4fff95" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">C#</a>, <a id="unity" data-color="#d866f7" class="slideline cursor-pointer text-lg hover:text-2xl ease-in-out" style="--tc: #d866f7">Unity</a>, <a id="js" data-color="#facc15" style="--tc: #facc15;" class="slideline cursor-pointer text-lg hover:text-2xl transition-all ease-in-out 3s">Javascript</a> and <a id="many" data-color="#ec4899" style="--tc: #ec4899" class="slideline cursor-pointer hover:text-2xl text-lg">more</a></p>
         <p class="text-lg"><a id="cardSpin" target="_blank" class="slideline text-gray-500 cursor-pointer hover:text-2xl transition-all ease-in-out 3s" style="--tc:rgb(107 114 128)">Rates & Contact</a></p>
       </div>

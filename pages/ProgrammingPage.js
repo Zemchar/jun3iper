@@ -3,6 +3,8 @@ import * as TWEEN from '@tweenjs/tween.js'
 import {EffectComposer, EffectPass, OutlineEffect, RenderPass, SelectiveBloomEffect} from "postprocessing"
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {MeshBasicMaterial} from "three";
+import {color} from "three/nodes";
+import colors from "tailwindcss/colors.js";
 
 let mobile = false;
 
@@ -40,7 +42,7 @@ manager.onLoad = function () {
             highlightType("JS", "#ffffff", true, 1500)
         })
         many.addEventListener('mouseover', () => {
-            highlightType("other", many.dataset.color, true, 1500)
+            highlightType("other", many.dataset.color)
         })
         many.addEventListener('mouseout', () => {
             highlightType("other", "#ffffff", true, 1500)
@@ -119,17 +121,16 @@ const outline = new OutlineEffect(scene, camera, {
 })
 
 async function loadScene() {
-    tree = await loader.loadAsync('/models/tree.glb',)
-    tree = tree.scene.children[0]
+    tree = new  THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({color: 0x000000}))
+    // tree = tree.scene.children[0]
     tree.rotation.set(0, 0, 0)
     tree.name = "tree"
-    tree.material = new THREE.MeshBasicMaterial({color: 0x000000})
     scene.add(tree)
     console.log(tree.scale, tree.position)
 
     // post processing
     outline.selection.add(tree)
-    effects.push(outline)
+    // effects.push(outline)
     effects.push(bloom)
     const effectPass = new EffectPass(camera, ...effects);
     effectPass.renderToScreen = true;
@@ -143,6 +144,9 @@ async function loadScene() {
 loadScene()
 
 // Generation
+/**
+ * the main projects dictionary file
+ */
 let projects = [];
 async function addProjects() {
     projects = await fetch("/projects.json");
@@ -205,8 +209,6 @@ function editDetails(proj) {
         return;
     }
     const panel = document.getElementById("sidebar").children.namedItem('cont')
-    console.log(panel)
-    console.log(proj)
     // Name link thing
     panel.children[0].children.namedItem("NameLink").setAttribute('href', proj.link)
     panel.children[0].children.namedItem("NameLink").innerText = "🔗 " + proj.name_pub;
@@ -310,19 +312,34 @@ function normalize(value, min, max) {
 
 let timeout;
 
-function highlightType(name, color, fade = false, fadedir = 1000) {
+function highlightType(name, color, fade = false, fadedir = 1000, directName = false) {
     //filter for name tag in main-lang attribute
+    if(directName){
+        let obj = scene.getObjectByName(`${name}`)
+        if (fade) {
+            let rgb = hexToRgb(color)
+            console.log(`Fading to ${color}`)
+            new TWEEN.Tween(obj.material.color).to({
+                r: rgb.r,
+                g: rgb.g,
+                b: rgb.b
+            }, fadedir).easing(TWEEN.Easing.Exponential.InOut).start()
+        } else {
+            obj.material = new MeshBasicMaterial({color: color})
+        }
+    }
+
     projects["Projects"].forEach((proj) => {
-        if (proj.langident === name) {
+        if (proj.langident === name || name === "ALL") {
             let obj = scene.getObjectByName(`${proj.name_pub}:${proj.id}`)
             if (fade) {
                 let rgb = hexToRgb(color)
+                console.log(`Fading to ${color}`)
                 new TWEEN.Tween(obj.material.color).to({
                     r: rgb.r,
                     g: rgb.g,
                     b: rgb.b
-                }, fadedir).easing(TWEEN.Easing.Exponential.InOut).start().onComplete(() => {
-                }); // fade to color
+                }, fadedir).easing(TWEEN.Easing.Exponential.InOut).start()
             } else {
                 obj.material = new MeshBasicMaterial({color: color})
             }
@@ -349,7 +366,8 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16)
     } : null;
 }
-
+// Small optimization to not constantly re-fade the objects if one hasnt been passed over
+let needsToFade = false
 function onDocumentMouseMove(event) {
     let ray = new THREE.Raycaster()
     let pointer = new THREE.Vector2()
@@ -359,10 +377,48 @@ function onDocumentMouseMove(event) {
     let intersects = ray.intersectObjects(tree.children)[0];
     if (intersects) {
         document.body.style.cursor = "pointer";
+        let color = projects["Projects"].filter(element => element.id == intersects.object.name.split(":")[1])
+        switch (color[0].langident) {
+            case "Unity":
+                color = unity.dataset.color;
+                break;
+            case "C#":
+                color = cs.dataset.color;
+                break;
+            case "JS":
+                color = js.dataset.color;
+                break;
+            default:
+                color = many.dataset.color;
+                break;
+        }
+        highlightType(intersects.object.name, color, false, 1500, true)
+        needsToFade = true
     } else if (ray.intersectObjects(scene.children).length > 0 && ray.intersectObjects(scene.children)[0].object === spinObject) {
         document.body.style.cursor = "pointer";
+        let color = projects["Projects"].filter(element => element.id == ray.intersectObjects(scene.children)[0].object.name.split(":")[1])
+        switch (color[0].langident) {
+            case "Unity":
+                color = unity.dataset.color;
+                break;
+            case "C#":
+                color = cs.dataset.color;
+                break;
+            case "JS":
+                color = js.dataset.color;
+                break;
+            default:
+                color = many.dataset.color;
+                break;
+        }
+        highlightType(ray.intersectObjects(scene.children)[0].object.name, color, false, 1500, true)
+        needsToFade = true
     } else {
         document.body.style.cursor = "default";
+        if(needsToFade) {
+            highlightType("ALL", "#ffffff", true, 1500, false)
+            needsToFade = false;
+        }
     }
     if (event.buttons > 0) { // if mouse down
         animRotate = false;
@@ -428,6 +484,8 @@ function selectorLogic(xpoint, ypoint) {
         // Move intersected object to center
         currentlyTweening = true;
         let swap = false;
+        let randRot ={x: (Math.random()*180)/100, y:(Math.random()*180)/100, z:(Math.random()*180)/100}
+
         breakjuniper: if (spinObject !== null ) {
             if (spinObject === "Juniper") {swap = true; break breakjuniper;} // THIS IS SO COOL
             // Swap: Another object is already selected
@@ -438,7 +496,7 @@ function selectorLogic(xpoint, ypoint) {
                 x: 0,
                 y: 0,
                 z: 0
-            }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(() => {
+            }, 200).easing(TWEEN.Easing.Linear.None).start().onComplete(function() {
                 let proj = projects["Projects"].filter((r) => {
                     return r.id == spinObject.name.split(':')[1]
                 })[0]
@@ -446,10 +504,12 @@ function selectorLogic(xpoint, ypoint) {
                     x: proj.position.x,
                     y: proj.position.y,
                     z: proj.position.z
-                }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                    spinObject.rotation.set(0, 0, 0)
+                }, 1000).easing(TWEEN.Easing.Elastic.InOut).onStart(()=>{
+                    new TWEEN.Tween(spinObject.rotation).to({...randRot}, 1000).easing(TWEEN.Easing.Elastic.InOut).start();
+                }).start().onComplete(() => {
                     animRotate = true;
                     spinObject = null;
+
                 });
             });
         }
@@ -486,6 +546,8 @@ function selectorLogic(xpoint, ypoint) {
     } else if (ray.intersectObjects(scene.children).length > 0 && !currentlyTweening && ray.intersectObjects(scene.children)[0].object === spinObject) {
         currentlyTweening = true;
         animRotate = false;
+        let randRot ={x: (Math.random()*180)/100, y:(Math.random()*180)/100, z:(Math.random()*180)/100}
+
         tree.attach(spinObject);
         let infoPanel = document.getElementById("sidebar");
         infoPanel.getAnimations()[0].reverse()
@@ -501,8 +563,9 @@ function selectorLogic(xpoint, ypoint) {
                 x: pos.x,
                 y: pos.y,
                 z: pos.z
-            }, 1000).easing(TWEEN.Easing.Elastic.InOut).start().onComplete(() => {
-                spinObject.rotation.set(0, 0, 0)
+            }, 1000).easing(TWEEN.Easing.Elastic.InOut).onStart(()=>{
+                new TWEEN.Tween(spinObject.rotation).to({...randRot}, 1000).easing(TWEEN.Easing.Elastic.InOut).start();
+            }).start().onComplete(() => {
                 spinObject = null;
                 currentlyTweening = false;
                 animRotate = true;
@@ -660,3 +723,4 @@ document.getElementById('mail').addEventListener('click', function() {
         document.getElementById('mail').innerText = 'juniper@circuit-cat.com';
     }, 1000);
 })
+
